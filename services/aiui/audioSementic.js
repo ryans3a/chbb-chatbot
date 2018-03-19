@@ -20,7 +20,7 @@ module.exports = (audioPath) => {
     var curTime = timestamp / 1000
 
     var xParam = {
-      "auf": "16k",
+      "auf": "8k",
       "aue": "raw",
       "scene": "main",
       "userid": "user_0001"

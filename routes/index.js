@@ -75,37 +75,33 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
   fs.renameSync(filepath, newPath)
 
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-  let query = req.query.q
 
-  audioSemanticService(newPath)
-  
-  // .then((data) => {
+  audioSemanticService(newPath).then((data) => {
 
-  //   // Process resp
-  //   let resp = JSON.parse(data).data
+    // Process resp
+    let resp = JSON.parse(data).data
+    let query = resp.text
 
-  //   parseResp(resp).then((answer) => {
+    parseResp(resp).then((answer) => {
 
-  //       logQuery(query, ip, true).then(() => {
+        logQuery(query, ip, true).then(() => {
 
-  //         res.json(answer)
-  //       })
-  //     })
-  //     .catch((err) => {
+          res.json(answer)
+        })
+      })
+      .catch((err) => {
 
-  //       logQuery(query, ip, false).then(() => {
+        logQuery(query, ip, false).then(() => {
           
-  //         res.send(err)
-  //       })
-  //     })
-  // }).catch((err) => {
-  //   logQuery(query, ip, false)
-  //   return res.json({
-  //     'error': err
-  //   })
-  // })
-
-  res.send('finish')
+          res.send(err)
+        })
+      })
+  }).catch((err) => {
+    logQuery(query, ip, false)
+    return res.json({
+      'error': err
+    })
+  })
 })
 
 router.get('/test', function (req, res) {
