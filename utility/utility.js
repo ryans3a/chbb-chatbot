@@ -1,11 +1,13 @@
 'use strict'
 
+const _ = require('lodash')
+
 module.exports.getRandomInt = (max) => {
   
-  return Math.floor(Math.random() * Math.floor(max))
+  return _.random(max)
 }
 
 module.exports.getRandomAnswer = (answers) => {
 
-  return answers[Math.floor(Math.random() * Math.floor(answers.length))]
+  return answers[_.random(answers.length - 1)]
 }

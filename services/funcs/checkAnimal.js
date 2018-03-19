@@ -2,20 +2,26 @@
 
 const utility = require('../../utility/utility')
 const _ = require('lodash')
+const Promise = require('bluebird')
 
 module.exports = (intent, entities) => {
   
-  switch(intent) {
+  return new Promise(function(resolve, reject) {
 
-    case 'default_intent': 
-      return defaultIntent()
+    switch(intent) {
 
-    case 'checkAnimal':
-      return checkAnimalIntent(entities)
-    
-    case 'compareAnimal':
-      return compareAnimalIntent(entities)
-  }
+      case 'default_intent': 
+        return resolve(defaultIntent())
+  
+      case 'checkAnimal':
+        return checkAnimalIntent(entities).then((answer) => {
+          resolve(answer)
+        })
+      
+      case 'compareAnimal':
+        return resolve(compareAnimalIntent(entities))
+    }
+  })
 }
 
 function defaultIntent() {
@@ -32,20 +38,23 @@ function defaultIntent() {
 
 function checkAnimalIntent(entities) {
 
-  let res = _.find(entities, { name: 'animal' })
-  if (res || res.length != 1) {
+  return new Promise(function(resolve, reject) {
 
-    return utility.getRandomAnswer([
-      '对不起，能再问小悠一遍吗？',
-      '小悠没听懂，能再问一遍吗？'
-    ])
-  } 
+    let res = _.find(entities, { name: 'animal' })
+    if (!res) {
 
-  // let queryAnimal = res[0].value -- user asked animal name
-  let animal = res[0].normValue
+      return reject(utility.getRandomAnswer([
+        '你想问小悠什么动物？',
+        '小悠没听懂动物的名字，能再问一遍吗？'
+      ]))
+    } 
 
-  // TODO: find animal from DB
+    // let queryAnimal = res[0].value -- user asked animal name
+    let animal = res.normValue
 
+    // TODO: find animal from DB
+    resolve(`${animal} is cute`)
+  })
 }
 
 function compareAnimalIntent(entities) {
