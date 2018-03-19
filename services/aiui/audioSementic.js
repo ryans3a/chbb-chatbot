@@ -7,6 +7,7 @@ const request = require('request')
 const config = require('config')
 const aiuiConfig = config.get('aiuiConfig')
 const url = aiuiConfig.AIUI_HOST + aiuiConfig.AUDIO_SEMANTIC_ENDPOINT
+const path = require('path')
 
 module.exports = (audioPath) => {
 
@@ -28,9 +29,10 @@ module.exports = (audioPath) => {
     var xParamBase64 = new Buffer(xParam).toString('base64')
 
     //音频文件
-    var fileData = fs.readFileSync(audioPath)
+    var fileData = fs.readFileSync(path.join(__dirname, '../../', audioPath))
     var fileBase64 = new Buffer(fileData).toString('base64')
     var bodyData = "data=" + fileBase64
+
     //ApiKey创建应用时自动生成
     var apiKey = aiuiConfig.API_KEY
     var token = apiKey + curTime + xParamBase64 + bodyData
@@ -47,13 +49,15 @@ module.exports = (audioPath) => {
         "X-CheckSum": xCheckSum,
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept-Charset': 'UTF-8'
-      }
+      },
+      body: bodyData
     }
     request.post(options, function (err, response, body) {
 
       if (err) {
         return reject(err)
       }
+      console.log(body)
       resolve(body)
     })
   })
