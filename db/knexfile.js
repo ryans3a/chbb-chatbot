@@ -3,18 +3,29 @@
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: 'mysql',
     connection: {
-      filename: './dev.sqlite3'
+      host: 'localhost',
+      database: 'chbb_chatbot_dev',
+      user:     'root',
+      password: 'root'
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
     }
   },
 
   staging: {
-    client: 'postgresql',
+    client: 'mysql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: 'localhost',
+      database: 'chbb_chatbot_dev',
+      user:     'root',
+      password: 'root'
     },
     pool: {
       min: 2,
@@ -26,11 +37,12 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
+    client: 'mysql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: 'localhost',
+      database: 'chbb_chatbot',
+      user:     'root',
+      password: 'root'
     },
     pool: {
       min: 2,
