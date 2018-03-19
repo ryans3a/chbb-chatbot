@@ -5,7 +5,8 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      database: 'chbb-chatbot',
+      host: 'localhost',
+      database: 'chbb_chatbot_dev',
       user:     'root',
       password: 'root'
     },
@@ -21,7 +22,8 @@ module.exports = {
   staging: {
     client: 'mysql',
     connection: {
-      database: 'chbb-chatbot',
+      host: 'localhost',
+      database: 'chbb_chatbot_dev',
       user:     'root',
       password: 'root'
     },
@@ -37,7 +39,8 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      database: 'chbb-chatbot',
+      host: 'localhost',
+      database: 'chbb_chatbot',
       user:     'root',
       password: 'root'
     },
@@ -49,4 +52,5 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   }
+
 };
