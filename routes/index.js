@@ -1,8 +1,8 @@
 'use strict'
 
 const express = require('express')
-const path = require('path')
 const fs = require('fs')
+const path = require('path')
 const router = express.Router()
 const textSemanticService = require('../services/aiui/textSementic')
 const audioSemanticService = require('../services/aiui/audioSementic')
@@ -12,6 +12,7 @@ const multer = require('multer')
 const upload = multer({
   dest: 'public/audio/query'
 })
+const utility = require('../utility/utility')
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -54,10 +55,10 @@ router.get('/textSementic', function (req, res) {
 
 router.post('/audioSementic', upload.single('file'), function (req, res) {
 
-  // let mimeType = req.file.mimetype
-  // if (!mimeType.startsWith('audio')) {
-  //   return res.send('不是Audio文件')
-  // }
+  let mimeType = req.file.mimetype
+  if (!mimeType.startsWith('audio')) {
+    return res.send('不是Audio文件')
+  }
 
   let maxSize = 1 * 1000 * 1000 // 300kb max
   if (req.file.size > maxSize) {
@@ -73,6 +74,9 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
   // let uploadPath = path.join(__dirname, '../public/audio/query')
 
   fs.renameSync(filepath, newPath)
+
+  // Convert into 16000 wav file
+  
 
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
@@ -97,6 +101,7 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
         })
       })
   }).catch((err) => {
+    logQuery(query, ip, false)
     return res.json({
       'error': err
     })
@@ -105,8 +110,14 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
 
 router.get('/test', function (req, res) {
 
-  test(function (body) {
-    res.send('finish')
+  let inputPath = path.join(__dirname, '../public/audio/query/whatdog.mp3')
+  let outputPath = path.join(__dirname, '../public/audio/query/whatdog.wav')
+
+  utility.convertAudio(inputPath, outputPath).then((outputPath) => {
+    console.log(outputPath)
+    res.send('success')
+  }).catch((err) => {
+    res.send('fail')
   })
 })
 
