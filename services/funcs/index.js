@@ -43,6 +43,9 @@ const parseResp = (resp) => {
           funcs[pureService](intent, entities).then((text) => {
             resolve(text)
           })
+          .catch(err => {
+            reject(err)
+          })
         }
         break;
       case 4: 

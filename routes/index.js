@@ -41,7 +41,7 @@ router.get('/textSementic', function (req, res) {
       .catch((err) => {
 
         logQuery(query, ip, false).then(() => {
-          
+
           res.send(err)
         })
       })
@@ -69,43 +69,44 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
   let filepath = req.file.path
   let originalName = req.file.originalname
   let postfix = originalName.split('.')[1]
-  let newPath = filepath + '.' + postfix
-  
+  let newPath = `${filepath}.${postfix}`
+  let convertedPath = `${filepath}.wav`
+
   // let uploadPath = path.join(__dirname, '../public/audio/query')
 
   fs.renameSync(filepath, newPath)
 
-  // Convert into 16000 wav file
-  
-
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
-  audioSemanticService(newPath).then((data) => {
+  // Convert into 16000 wav file
+  utility.convertAudio(newPath, convertedPath)
+    .then((outputPath) => audioSemanticService(outputPath))
+    .then((data) => {
+      // Process resp
+      let resp = JSON.parse(data).data
+      let query = resp.text
 
-    // Process resp
-    let resp = JSON.parse(data).data
-    let query = resp.text
+      parseResp(resp).then((answer) => {
 
-    parseResp(resp).then((answer) => {
+          logQuery(query, ip, true).then(() => {
 
-        logQuery(query, ip, true).then(() => {
-
-          res.json(answer)
+            res.json(answer)
+          })
         })
-      })
-      .catch((err) => {
+        .catch((err) => {
 
-        logQuery(query, ip, false).then(() => {
-          
-          res.send(err)
+          logQuery(query, ip, false).then(() => {
+
+            res.send(err)
+          })
         })
-      })
-  }).catch((err) => {
-    logQuery(query, ip, false)
-    return res.json({
-      'error': err
     })
-  })
+    .catch((err) => {
+      logQuery(query, ip, false)
+      return res.json({
+        'error': err
+      })
+    })
 })
 
 router.get('/test', function (req, res) {
