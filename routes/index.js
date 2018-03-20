@@ -54,10 +54,10 @@ router.get('/textSementic', function (req, res) {
 
 router.post('/audioSementic', upload.single('file'), function (req, res) {
 
-  let mimeType = req.file.mimetype
-  if (!mimeType.startsWith('audio')) {
-    return res.send('不是Audio文件')
-  }
+  // let mimeType = req.file.mimetype
+  // if (!mimeType.startsWith('audio')) {
+  //   return res.send('不是Audio文件')
+  // }
 
   let maxSize = 1 * 1000 * 1000 // 300kb max
   if (req.file.size > maxSize) {
@@ -97,7 +97,6 @@ router.post('/audioSementic', upload.single('file'), function (req, res) {
         })
       })
   }).catch((err) => {
-    logQuery(query, ip, false)
     return res.json({
       'error': err
     })

@@ -59,8 +59,8 @@ function checkAnimalIntent(entities) {
       if (!rows || rows.length != 1) {
 
         return utility.getRandomAnswer([
-          '小悠不知道，小悠去学习一下',
-          '这个小悠不知道，小悠要去学习一下'
+          '小悠不知道这个动物，小悠去学习一下',
+          '这个动物小悠不知道，小悠要去学习一下'
         ])
       }
 

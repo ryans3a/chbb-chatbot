@@ -20,7 +20,7 @@ module.exports = (audioPath) => {
     var curTime = timestamp / 1000
 
     var xParam = {
-      "auf": "8k",
+      "auf": "16k",
       "aue": "raw",
       "scene": "main",
       "userid": "user_0001"
@@ -55,6 +55,7 @@ module.exports = (audioPath) => {
     request.post(options, function (err, response, body) {
 
       if (err) {
+        console.log(err)
         return reject(err)
       }
       console.log(body)
