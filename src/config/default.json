@@ -1,0 +1,14 @@
+{
+  "aiuiConfig": {
+    "APP_NAME": "我的测试12138",
+    "APP_ID": "5a9f7bb0",
+    "API_KEY": "166f479fabbd4241ab87b916a86f3364",
+    "AIUI_HOST": "http://api.xfyun.cn",
+    "TEXT_SEMANTIC_ENDPOINT": "/v1/aiui/v1/text_semantic",
+    "AUDIO_SEMANTIC_ENDPOINT": "/v1/aiui/v1/voice_semantic",
+    "SCENE": "main"
+  }, 
+  "programConfig": {
+
+  }
+}
