@@ -7,7 +7,7 @@ const router = express.Router()
 const textSemanticService = require('../services/aiui/textSementic')
 const audioSemanticService = require('../services/aiui/audioSementic')
 const logQuery = require('../services/logService').logQuery
-const parseResp = require('../services/funcs/').parseResp
+const parseResp = require('../services/funcs/index').parseResp
 const multer = require('multer')
 const upload = multer({
   dest: 'public/audio/query'

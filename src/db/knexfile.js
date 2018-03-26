@@ -5,10 +5,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: process.env.MYSQL_HOST,
-      database: process.env.MYSQL_DATABASE,
-      user:     process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD
+      host: 'localhost',
+      database: 'chbb_chatbot_dev',
+      user:     'root',
+      password: 'root'
     },
     pool: {
       min: 2,
@@ -52,5 +52,4 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   }
-
 };
